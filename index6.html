@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: linear-gradient(to bottom, #0a0a1a 0%, #0f1729 50%, #0a0a1a 100%);
+            overflow-x: hidden;
+        }
+
+        /* Winter snow background */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .sakura-tree {
+            position: absolute;
+            bottom: 0;
+            right: 10%;
+            width: 400px;
+            height: 500px;
+            opacity: 0.12;
+        }
+
+        /* Winter tree SVG styling */
+        .tree-trunk {
+            fill: #3a4a5a;
+        }
+
+        .tree-branch {
+            stroke: #4a5a6a;
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .tree-blossom {
+            fill: #e0f0ff;
+            opacity: 0.8;
+        }
+
+        /* Falling snowflakes */
+        .sakura-petal {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(ellipse at center, #ffffff 0%, #e0f0ff 50%, #c0d8f0 100%);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+            transform-origin: center;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fall {
+            0% {
+                top: -50px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        @keyframes sway {
+            0% {
+                transform: translateX(-30px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(30px) rotate(360deg);
+            }
+        }
+
+        /* Winter glow effect */
+        .sakura-glow {
+            position: fixed;
+            top: 50%;
+            right: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(200, 230, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Fade in animation for sections */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        header {
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(10px);
+            color: #e0e0e0;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(100, 180, 255, 0.1);
+            border-bottom: 1px solid rgba(100, 180, 255, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #64b4ff, #a0d0ff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(90deg, #64b4ff, #a0d0ff);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: #64b4ff;
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            margin-top: 60px;
+            text-align: center;
+            padding: 8rem 2rem 5rem;
+            background: transparent;
+            color: #e0e0e0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            animation: fadeInUp 1s ease;
+            text-shadow: 0 0 20px rgba(100, 180, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #a0b8d0;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #64b4ff, #00d4ff);
+            color: #0a0a1a;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease 0.4s backwards;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(100, 180, 255, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(100, 180, 255, 0.5);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            text-shadow: 0 0 20px rgba(100, 180, 255, 0.2);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #64b4ff, #a0d0ff, transparent);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                opacity: 0.5;
+                width: 100px;
+            }
+            50% {
+                opacity: 1;
+                width: 150px;
+            }
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .skills-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .skills-category {
+            margin-bottom: 3rem;
+        }
+
+        .skills-category h3 {
+            text-align: center;
+            background: linear-gradient(45deg, #64b4ff, #a0d0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tools-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+
+        .skill-card {
+            background: rgba(26, 26, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem 1rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(100, 180, 255, 0.3);
+            border-color: #64b4ff;
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: rotateY(360deg);
+        }
+
+        .skill-card p {
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(26, 26, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            position: relative;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 40px rgba(100, 180, 255, 0.3);
+            border-color: #64b4ff;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #64b4ff, #00d4ff, #4da3e8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a1a;
+            font-size: 3rem;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-content h3 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-timeline {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .education-item {
+            background: rgba(26, 26, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #64b4ff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .education-item::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(180deg, #64b4ff, #a0d0ff);
+            transition: height 0.4s ease;
+        }
+
+        .education-item:hover::before {
+            height: 100%;
+        }
+
+        .education-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(100, 180, 255, 0.3);
+        }
+
+        .education-item h3 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-item .year {
+            color: #64b4ff;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-methods {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 2rem 3rem;
+            background: rgba(26, 26, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(100, 180, 255, 0.3);
+            border-radius: 15px;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: all 0.4s ease;
+            min-width: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(100, 180, 255, 0.2), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            border-radius: 50%;
+        }
+
+        .contact-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-10px);
+            border-color: #64b4ff;
+            box-shadow: 0 10px 30px rgba(100, 180, 255, 0.4);
+        }
+
+        .contact-btn .icon {
+            font-size: 2.5rem;
+            transition: transform 0.4s ease;
+        }
+
+        .contact-btn:hover .icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .contact-btn span:nth-child(2) {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #64b4ff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-detail {
+            font-size: 0.9rem;
+            color: #a0b8d0;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            background: rgba(10, 10, 26, 0.95);
+            color: #e0e0e0;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(100, 180, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #64b4ff, #a0d0ff);
+            transition: width 0.3s;
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+        }
+
+        .social-links a:hover {
+            color: #64b4ff;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .sakura-tree {
+                right: 5%;
+                width: 300px;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Winter Snow Theme Background -->
+    <div class="sakura-container" id="sakuraContainer">
+        <!-- Winter Tree -->
+        <svg class="sakura-tree" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tree Trunk -->
+            <path class="tree-trunk" d="M180 500 L180 300 Q185 250 190 200 Q195 150 200 100 L210 100 Q215 150 220 200 Q225 250 230 300 L230 500 Z"/>
+            
+            <!-- Main Branches -->
+            <path class="tree-branch" d="M200 150 Q150 120 100 100"/>
+            <path class="tree-branch" d="M200 150 Q250 120 300 100"/>
+            <path class="tree-branch" d="M205 200 Q180 180 150 170"/>
+            <path class="tree-branch" d="M205 200 Q230 180 260 170"/>
+            <path class="tree-branch" d="M210 250 Q190 230 170 220"/>
+            <path class="tree-branch" d="M210 250 Q230 230 250 220"/>
+            
+            <!-- Sub Branches -->
+            <path class="tree-branch" d="M150 170 Q130 160 110 155"/>
+            <path class="tree-branch" d="M260 170 Q280 160 300 155"/>
+            <path class="tree-branch" d="M100 100 Q80 90 60 85"/>
+            <path class="tree-branch" d="M300 100 Q320 90 340 85"/>
+            
+            <!-- Snow/Frost on branches -->
+            <circle class="tree-blossom" cx="100" cy="100" r="20"/>
+            <circle class="tree-blossom" cx="300" cy="100" r="20"/>
+            <circle class="tree-blossom" cx="150" cy="170" r="18"/>
+            <circle class="tree-blossom" cx="260" cy="170" r="18"/>
+            <circle class="tree-blossom" cx="170" cy="220" r="16"/>
+            <circle class="tree-blossom" cx="250" cy="220" r="16"/>
+            <circle class="tree-blossom" cx="60" cy="85" r="15"/>
+            <circle class="tree-blossom" cx="340" cy="85" r="15"/>
+            <circle class="tree-blossom" cx="110" cy="155" r="14"/>
+            <circle class="tree-blossom" cx="300" cy="155" r="14"/>
+            
+            <!-- Additional frost clusters -->
+            <circle class="tree-blossom" cx="80" cy="95" r="12"/>
+            <circle class="tree-blossom" cx="120" cy="110" r="12"/>
+            <circle class="tree-blossom" cx="280" cy="110" r="12"/>
+            <circle class="tree-blossom" cx="320" cy="95" r="12"/>
+            <circle class="tree-blossom" cx="130" cy="165" r="10"/>
+            <circle class="tree-blossom" cx="280" cy="165" r="10"/>
+        </svg>
+        
+        <!-- Winter Glow -->
+        <div class="sakura-glow"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">SASIKUMAR C</div>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Hi, I'm SASIKUMAR C</h1>
+        <p>Web Developer | AI/ML Enthusiast | Problem Solver</p>
+        <a href="#contact" class="btn">Get In Touch</a>
+    </div>
+
+    <section id="about" class="fade-in">
+        <h2>About Me</h2>
+        <div class="about-content">
+            <p>I'm a passionate web developer with a love for creating beautiful, functional websites. With expertise in modern web technologies, I bring ideas to life through clean code and creative design. I'm always eager to learn new technologies and take on challenging projects.</p>
+        </div>
+    </section>
+
+    <section id="skills" class="fade-in">
+        <h2>Skills</h2>
+        <div class="skills-container">
+            <div class="skills-category">
+                <h3>Technologies</h3>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#E44D26" d="M19.037 113.876L9.032 1.661h109.936l-10.016 112.198-45.019 12.48z"></path>
+                                <path fill="#F16529" d="M64 116.8l36.378-10.086 8.559-95.878H64z"></path>
+                                <path fill="#EBEBEB" d="M64 52.455H45.788L44.53 38.361H64V24.599H29.489l.33 3.692 3.382 37.927H64zm0 35.743l-.061.017-15.327-4.14-.979-10.975H33.816l1.928 21.609 28.193 7.826.063-.017z"></path>
+                                <path fill="#FFF" d="M63.952 52.455v13.763h16.947l-1.597 17.849-15.35 4.143v14.319l28.215-7.82.207-2.325 3.234-36.233.335-3.696h-3.708zm0-27.856v13.762h33.244l.276-3.092.628-6.978.329-3.692z"></path>
+                            </svg>
+                        </div>
+                        <p>HTML</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#1572B6" d="M18.814 114.123L8.76 1.352h110.48l-10.064 112.754-45.243 12.543-45.119-12.526z"></path>
+                                <path fill="#33A9DC" d="M64.001 117.062l36.559-10.136 8.601-96.354h-45.16v106.49z"></path>
+                                <path fill="#fff" d="M64.001 51.429h18.302l1.264-14.163H64.001V23.435h34.682l-.332 3.711-3.4 38.114h-30.95V51.429z"></path>
+                                <path fill="#EBEBEB" d="M64.083 87.349l-.061.018-15.403-4.159-.985-11.031H33.752l1.937 21.717 28.331 7.863.063-.018v-14.39z"></path>
+                                <path fill="#fff" d="M81.127 64.675l-1.666 18.522-15.426 4.164v14.39l28.354-7.858.208-2.337 2.406-26.881H81.127z"></path>
+                                <path fill="#EBEBEB" d="M64.048 23.435v13.831H30.64l-.277-3.108-.63-7.012-.331-3.711h34.646zm-.047 27.996v13.831H48.792l-.277-3.108-.631-7.012-.33-3.711h16.447z"></path>
+                            </svg>
+                        </div>
+                        <p>CSS</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#F0DB4F" d="M1.408 1.408h125.184v125.185H1.408z"></path>
+                                <path fill="#323330" d="M116.347 96.736c-.917-5.711-4.641-10.508-15.672-14.981-3.832-1.761-8.104-3.022-9.377-5.926-.452-1.69-.512-2.642-.226-3.665.821-3.32 4.784-4.355 7.925-3.403 2.023.678 3.938 2.237 5.093 4.724 5.402-3.498 5.391-3.475 9.163-5.879-1.381-2.141-2.118-3.129-3.022-4.045-3.249-3.629-7.676-5.498-14.756-5.355l-3.688.477c-3.534.893-6.902 2.748-8.877 5.235-5.926 6.724-4.236 18.492 2.975 23.335 7.104 5.332 17.54 6.545 18.873 11.531 1.297 6.104-4.486 8.08-10.234 7.378-4.236-.881-6.592-3.034-9.139-6.949-4.688 2.713-4.688 2.713-9.508 5.485 1.143 2.499 2.344 3.63 4.26 5.795 9.068 9.198 31.76 8.746 35.83-5.176.165-.478 1.261-3.666.38-8.581zM69.462 58.943H57.753l-.048 30.272c0 6.438.333 12.34-.714 14.149-1.713 3.558-6.152 3.117-8.175 2.427-2.059-1.012-3.106-2.451-4.319-4.485-.333-.584-.583-1.036-.667-1.071l-9.52 5.83c1.583 3.249 3.915 6.069 6.902 7.901 4.462 2.678 10.459 3.499 16.731 2.059 4.082-1.189 7.604-3.652 9.448-7.401 2.666-4.915 2.094-10.864 2.07-17.444.06-10.735.001-21.468.001-32.237z"></path>
+                            </svg>
+                        </div>
+                        <p>JavaScript</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <g fill="#61DAFB"><circle cx="64" cy="64" r="11.4"></circle><path d="M107.3 45.2c-2.2-.8-4.5-1.6-6.9-2.3.6-2.4 1.1-4.8 1.5-7.1 2.1-13.2-.2-22.5-6.6-26.1-1.9-1.1-4-1.6-6.4-1.6-7 0-15.9 5.2-24.9 13.9-9-8.7-17.9-13.9-24.9-13.9-2.4 0-4.5.5-6.4 1.6-6.4 3.7-8.7 13-6.6 26.1.4 2.3.9 4.7 1.5 7.1-2.4.7-4.7 1.4-6.9 2.3C8.2 50 1.4 56.6 1.4 64s6.9 14 19.3 18.8c2.2.8 4.5 1.6 6.9 2.3-.6 2.4-1.1 4.8-1.5 7.1-2.1 13.2.2 22.5 6.6 26.1 1.9 1.1 4 1.6 6.4 1.6 7.1 0 16-5.2 24.9-13.9 9 8.7 17.9 13.9 24.9 13.9 2.4 0 4.5-.5 6.4-1.6 6.4-3.7 8.7-13 6.6-26.1-.4-2.3-.9-4.7-1.5-7.1 2.4-.7 4.7-1.4 6.9-2.3 12.5-4.8 19.3-11.4 19.3-18.8s-6.8-14-19.3-18.8zM92.5 14.7c4.1 2.4 5.5 9.8 3.8 20.3-.3 2.1-.8 4.3-1.4 6.6-5.2-1.2-10.7-2-16.5-2.5-3.4-4.8-6.9-9.1-10.4-13 7.4-7.3 14.9-12.3 21-12.3 1.3 0 2.5.3 3.5.9zM81.3 74c-1.8 3.2-3.9 6.4-6.1 9.6-3.7.3-7.4.4-11.2.4-3.9 0-7.6-.1-11.2-.4-2.2-3.2-4.2-6.4-6-9.6-1.9-3.3-3.7-6.7-5.3-10 1.6-3.3 3.4-6.7 5.3-10 1.8-3.2 3.9-6.4 6.1-9.6 3.7-.3 7.4-.4 11.2-.4 3.9 0 7.6.1 11.2.4 2.2 3.2 4.2 6.4 6 9.6 1.9 3.3 3.7 6.7 5.3 10-1.7 3.3-3.4 6.6-5.3 10zm8.3-3.3c1.5 3.5 2.7 6.9 3.8 10.3-3.4.8-7 1.4-10.8 1.9 1.2-1.9 2.5-3.9 3.6-6 1.2-2.1 2.3-4.2 3.4-6.2zM64 97.8c-2.4-2.6-4.7-5.4-6.9-8.3 2.3.1 4.6.2 6.9.2 2.3 0 4.6-.1 6.9-.2-2.2 2.9-4.5 5.7-6.9 8.3zm-18.6-15c-3.8-.5-7.4-1.1-10.8-1.9 1.1-3.3 2.3-6.8 3.8-10.3 1.1 2 2.2 4.1 3.4 6.1 1.2 2.2 2.4 4.1 3.6 6.1zm-7-25.5c-1.5-3.5-2.7-6.9-3.8-10.3 3.4-.8 7-1.4 10.8-1.9-1.2 1.9-2.5 3.9-3.6 6-1.2 2.1-2.3 4.2-3.4 6.2zM64 30.2c2.4 2.6 4.7 5.4 6.9 8.3-2.3-.1-4.6-.2-6.9-.2-2.3 0-4.6.1-6.9.2 2.2-2.9 4.5-5.7 6.9-8.3zm22.2 21.1c-1.2-2.1-2.4-4.2-3.6-6.2 3.8.5 7.4 1.1 10.8 1.9-1.1 3.3-2.3 6.8-3.8 10.3-1.1-2.1-2.2-4.2-3.4-6zm25.5 5.9c0 3.8-3.7 7.5-10.4 10.8-1.5.7-3.2 1.3-4.9 1.9-1.9-5.7-4.3-11.4-7-17-.1-.2-.2-.5-.4-.7 2.7-5.6 5.1-11.4 7-17 1.7.6 3.4 1.2 4.9 1.9 6.7 3.2 10.4 6.9 10.4 10.8zM35.5 14.7c1-.6 2.2-.9 3.5-.9 6.1 0 13.6 5 21 12.3-3.5 3.8-7 8.2-10.4 13-5.8.5-11.3 1.4-16.5 2.5-.6-2.3-1-4.5-1.4-6.6-1.8-10.5-.4-17.9 3.8-20.3zM10.6 60.4c0-3.8 3.7-7.5 10.4-10.8 1.5-.7 3.2-1.3 4.9-1.9 1.9 5.7 4.3 11.4 7 17 .1.2.2.5.4.7-2.7 5.6-5.1 11.4-7 17-1.7-.6-3.4-1.2-4.9-1.9-6.7-3.2-10.4-6.9-10.4-10.8zm24.9 48.6c-4.1-2.4-5.5-9.8-3.8-20.3.3-2.1.8-4.3 1.4-6.6 5.2 1.2 10.7 2 16.5 2.5 3.4 4.8 6.9 9.1 10.4 13-7.4 7.3-14.9 12.3-21 12.3-1.3 0-2.5-.3-3.5-.9zM92.5 109c-1 .6-2.2.9-3.5.9-6.1 0-13.6-5-21-12.3 3.5-3.8 7-8.2 10.4-13 5.8-.5 11.3-1.4 16.5-2.5.6 2.3 1 4.5 1.4 6.6 1.8 10.5.4 17.9-3.8 20.3zm9.8-18.4c-1.5.7-3.2 1.3-4.9 1.9-1.9-5.7-4.3-11.4-7-17-.1-.2-.2-.5-.4-.7 2.7-5.6 5.1-11.4 7-17 1.7.6 3.4 1.2 4.9 1.9 6.7 3.2 10.4 6.9 10.4 10.8-.1 3.8-3.8 7.5-10.5 10.8z"></path></g>
+                            </svg>
+                        </div>
+                        <p>React</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#83CD29" d="M112.771 30.334L68.674 4.729c-2.781-1.584-6.402-1.584-9.205 0L14.901 30.334C12.031 31.985 10 35.088 10 38.407v51.142c0 3.319 2.084 6.423 4.954 8.083l11.775 6.688c5.628 2.772 7.617 2.772 10.178 2.772 8.333 0 13.093-5.039 13.093-13.828v-50.49c0-.713-.371-1.774-1.071-1.774h-5.623C42.594 41 41 42.061 41 42.773v50.49c0 3.896-3.524 7.773-10.11 4.48L18.723 90.73c-.424-.23-.723-.693-.723-1.181V38.407c0-.482.555-.966.982-1.213l44.424-25.561c.415-.235 1.025-.235 1.439 0l43.882 25.555c.42.253.272.722.272 1.219v51.142c0 .488.183.963-.232 1.198l-44.086 25.576c-.378.227-.847.227-1.261 0l-11.307-6.749c-.341-.198-.746-.269-1.073-.086-3.146 1.783-3.726 2.02-6.677 3.043-.726.253-1.797.692.41 1.929l14.798 8.754a9.294 9.294 0 004.647 1.246c1.642 0 3.25-.426 4.667-1.246l43.885-25.582c2.87-1.672 4.23-4.764 4.23-8.083V38.407c0-3.319-1.36-6.414-4.229-8.073zM77.91 81.445c-11.726 0-14.309-3.235-15.17-9.066-.1-.628-.633-1.379-1.272-1.379h-5.731c-.709 0-1.279.86-1.279 1.566 0 7.466 4.059 16.512 23.453 16.512 14.039 0 22.088-5.455 22.088-15.109 0-9.572-6.467-12.084-20.082-13.886-13.762-1.819-15.16-2.738-15.16-5.962 0-2.658 1.184-6.203 11.374-6.203 9.105 0 12.461 1.954 13.842 8.091.118.577.645.991 1.24.991h5.754c.354 0 .692-.143.94-.396.24-.272.367-.613.335-.979-.891-10.568-7.912-15.493-22.112-15.493-12.631 0-20.166 5.334-20.166 14.275 0 9.698 7.497 12.378 19.622 13.577 14.505 1.422 15.633 3.542 15.633 6.395 0 4.955-3.978 7.066-13.309 7.066z"></path>
+                            </svg>
+                        </div>
+                        <p>Node.js</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <linearGradient id="python-original-a" gradientUnits="userSpaceOnUse" x1="70.252" y1="1237.476" x2="170.659" y2="1151.089" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)"><stop offset="0" stop-color="#5A9FD4"></stop><stop offset="1" stop-color="#306998"></stop></linearGradient><linearGradient id="python-original-b" gradientUnits="userSpaceOnUse" x1="209.474" y1="1098.811" x2="173.62" y2="1149.537" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)"><stop offset="0" stop-color="#FFD43B"></stop><stop offset="1" stop-color="#FFE873"></stop></linearGradient><path fill="url(#python-original-a)" d="M63.391 1.988c-4.222.02-8.252.379-11.8 1.007-10.45 1.846-12.346 5.71-12.346 12.837v9.411h24.693v3.137H29.977c-7.176 0-13.46 4.313-15.426 12.521-2.268 9.405-2.368 15.275 0 25.096 1.755 7.311 5.947 12.519 13.124 12.519h8.491V67.234c0-8.151 7.051-15.34 15.426-15.34h24.665c6.866 0 12.346-5.654 12.346-12.548V15.833c0-6.693-5.646-11.72-12.346-12.837-4.244-.706-8.645-1.027-12.866-1.008zM50.037 9.557c2.55 0 4.634 2.117 4.634 4.721 0 2.593-2.083 4.69-4.634 4.69-2.56 0-4.633-2.097-4.633-4.69-.001-2.604 2.073-4.721 4.633-4.721z" transform="translate(0 10.26)"></path><path fill="url(#python-original-b)" d="M91.682 28.38v10.966c0 8.5-7.208 15.655-15.426 15.655H51.591c-6.756 0-12.346 5.783-12.346 12.549v23.515c0 6.691 5.818 10.628 12.346 12.547 7.816 2.297 15.312 2.713 24.665 0 6.216-1.801 12.346-5.423 12.346-12.547v-9.412H63.938v-3.138h37.012c7.176 0 9.852-5.005 12.348-12.519 2.578-7.735 2.467-15.174 0-25.096-1.774-7.145-5.161-12.521-12.348-12.521h-9.268zM77.809 87.927c2.561 0 4.634 2.097 4.634 4.692 0 2.602-2.074 4.719-4.634 4.719-2.55 0-4.633-2.117-4.633-4.719 0-2.595 2.083-4.692 4.633-4.692z" transform="translate(0 10.26)"></path><radialGradient id="python-original-c" cx="1825.678" cy="444.45" r="26.743" gradientTransform="matrix(0 -.24 -1.055 0 532.979 557.576)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#B8B8B8" stop-opacity=".498"></stop><stop offset="1" stop-color="#7F7F7F" stop-opacity="0"></stop></radialGradient><path opacity=".444" fill="url(#python-original-c)" d="M97.309 119.597c0 3.543-14.816 6.416-33.091 6.416-18.276 0-33.092-2.873-33.092-6.416 0-3.544 14.815-6.417 33.092-6.417 18.275 0 33.091 2.872 33.091 6.417z"></path>
+                            </svg>
+                        </div>
+                        <p>Python</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="skills-category">
+                <h3>Tools</h3>
+                <div class="skills-grid tools-grid">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#0074CC" d="M41.252 126.5h-5.75c-.5 0-.75-.25-.75-.75V57.5c0-.5.25-.75.75-.75h5.75c.5 0 .75.25.75.75v68.25c0 .5-.25.75-.75.75zm73.5 0h-5.75c-.5 0-.75-.25-.75-.75V57.5c0-.5.25-.75.75-.75h5.75c.5 0 .75.25.75.75v68.25c0 .5-.25.75-.75.75z"></path><path fill="#0074CC" d="M114.752 77.5h-73.5c-.5 0-.75-.25-.75-.75v-5.75c0-.5.25-.75.75-.75h73.5c.5 0 .75.25.75.75v5.75c0 .5-.25.75-.75.75zm0-20h-73.5c-.5 0-.75-.25-.75-.75v-5.75c0-.5.25-.75.75-.75h73.5c.5 0 .75.25.75.75v5.75c0 .5-.25.75-.75.75zm0 40h-73.5c-.5 0-.75-.25-.75-.75v-5.75c0-.5.25-.75.75-.75h73.5c.5 0 .75.25.75.75v5.75c0 .5-.25.75-.75.75zm0 20h-73.5c-.5 0-.75-.25-.75-.75v-5.75c0-.5.25-.75.75-.75h73.5c.5 0 .75.25.75.75v5.75c0 .5-.25.75-.75.75z"></path><path fill="#1F7AB3" d="M64.002 1l61 40-61 40-61-40z"></path><path fill="#57A9E1" d="M64.002 23l42.5 28-42.5 28-42.5-28z"></path>
+                            </svg>
+                        </div>
+                        <p>VS Code</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#F34F29" d="M124.737 58.378L69.621 3.264c-3.172-3.174-8.32-3.174-11.497 0L46.68 14.71l14.518 14.518c3.375-1.139 7.243-.375 9.932 2.314 2.703 2.706 3.461 6.607 2.294 9.993l13.992 13.993c3.385-1.167 7.292-.413 9.994 2.295 3.78 3.777 3.78 9.9 0 13.679a9.673 9.673 0 01-13.683 0 9.677 9.677 0 01-2.105-10.521L68.574 47.933l-.002 34.341a9.708 9.708 0 012.559 1.828c3.778 3.777 3.778 9.898 0 13.683-3.779 3.777-9.904 3.777-13.679 0-3.778-3.784-3.778-9.905 0-13.683a9.65 9.65 0 013.167-2.11V47.333a9.581 9.581 0 01-3.167-2.111c-2.862-2.86-3.551-7.06-2.083-10.576L41.056 20.333 3.264 58.123a8.133 8.133 0 000 11.5l55.117 55.114c3.174 3.174 8.32 3.174 11.499 0l54.858-54.858a8.135 8.135 0 00-.001-11.501z"></path>
+                            </svg>
+                        </div>
+                        <p>Git</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg viewBox="0 0 128 128" width="60" height="60">
+                                <path fill="#FF9900" d="M38.089 77.466l-11.4 4.313s-1.66.705-.227 1.65c1.595 1.053 3.51 1.302 5.37 1.302 8.06-.132 14.582-2.723 14.582-2.723l-8.325-4.542zm-9.446-11.13l-12.886 4.864s-1.207.906.227 1.548c1.886 1.03 5.65 1.385 9.055 1.132 6.83-.396 13.366-2.05 13.366-2.05l-9.762-5.494zM64 48.386c-4.53 0-8.195 3.665-8.195 8.195 0 4.53 3.665 8.195 8.195 8.195 4.53 0 8.195-3.665 8.195-8.195 0-4.53-3.665-8.195-8.195-8.195z"></path>
+                                <path fill="#FF9900" d="M73.924 81.636c-.248 1.043-2.455 1.744-2.455 1.744s13.85 1.67 22.718-7.365c9.246-9.425 7.668-21.48 7.668-21.48s-11.5 20.3-27.93 27.1z"></path>
+                                <path fill="#252F3E" d="M64.023 1.417C29.318 1.417 1.098 29.64 1.098 64.345c0 27.825 18.089 51.485 43.195 59.86 3.16.584 4.313-1.376 4.313-3.052 0-1.503-.055-5.494-.083-10.78-17.53 3.81-21.236-8.456-21.236-8.456-2.875-7.303-7.015-9.246-7.015-9.246-5.736-3.92.435-3.843.435-3.843 6.34.447 9.677 6.507 9.677 6.507 5.636 9.658 14.778 6.87 18.377 5.252.573-4.085 2.205-6.87 4.01-8.45-14.034-1.597-28.787-7.015-28.787-31.228 0-6.896 2.464-12.532 6.507-16.95-.652-1.596-2.82-8.03.617-16.74 0 0 5.305-1.697 17.375 6.478 5.04-1.4 10.443-2.1 15.816-2.124 5.37.023 10.775.724 15.816 2.124 12.066-8.176 17.37-6.478 17.37-6.478 3.44 8.71 1.27 15.143.618 16.74 4.048 4.418 6.505 10.054 6.505 16.95 0 24.276-14.778 29.614-28.85 31.183 2.268 1.955 4.288 5.816 4.288 11.72 0 8.456-.076 15.27-.076 17.347 0 1.688 1.14 3.664 4.34 3.047 25.085-8.386 43.158-32.04 43.158-59.85C126.948 29.64 98.728 1.417 64.023 1.417z"></path>
+                                <path fill="#FF9900" d="M23.28 93.14c-.146.33-1.032.428-1.94.203-.903-.23-1.41-.855-1.26-1.188.15-.332 1.035-.433 1.944-.206.91.228 1.412.857 1.256 1.19zm-1.39-1.035l.002-.003.002-.002v-.003l.001-.002zm1.854 2.544c-.317.295-1.176.158-1.884-.305-.708-.462-.84-1.083-.518-1.382.325-.3 1.167-.156 1.884.305.718.463.85 1.084.518 1.382zm-2.24-1.95l.003-.003zm2.392 3.31c-.407.284-1.372.019-2.153-.582-.778-.602-.998-1.462-.59-1.745.41-.285 1.373-.025 2.153.576.78.604 1.002 1.466.59 1.75zm-.84-2.23l.002-.002zm3.088 3.402c-.363.402-1.435.294-2.357-.248-.93-.548-1.19-1.403-.827-1.805.364-.402 1.44-.297 2.374.247.93.547 1.195 1.403.81 1.806zm-.92-2.24l.002-.002zm4.11 1.738c-.16.52-1.33.755-2.596.53-1.267-.23-2.095-.85-1.94-1.374.16-.518 1.33-.76 2.604-.527 1.266.23 2.094.848 1.932 1.37zm0-2.067l-.002.002zm4.538.34c.018.547-1.044.998-2.353 1.006-1.31.01-2.37-.426-2.375-.97 0-.55 1.05-.997 2.364-1.008 1.31-.01 2.364.426 2.364.972zm0-2.067l-.001.002zm4.206.64c.094.534-.77 1.082-2.065 1.225-1.29.14-2.477-.186-2.574-.717-.097-.536.78-1.09 2.067-1.23 1.296-.14 2.478.183 2.572.722z"></path>
+                            </svg>
+                        </div>
+                        <p>AWS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="fade-in">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-img">♻️</div>
+                <div class="project-content">
+                    <h3>E-Waste Facility Locator</h3>
+                    <p>A web application that helps users locate nearby e-waste recycling facilities and promotes responsible electronic waste disposal.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img">🌾</div>
+                <div class="project-content">
+                    <h3>Crop Rotation System</h3>
+                    <p>An intelligent system that recommends optimal crop rotation patterns to improve soil health and maximize agricultural yield.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img">💰</div>
+                <div class="project-content">
+                    <h3>Cloud-Based Expense Tracker</h3>
+                    <p>A secure cloud application for tracking personal expenses with real-time analytics and budget management features.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="fade-in">
+        <h2>Education</h2>
+        <div class="education-timeline">
+            <div class="education-item">
+                <h3>B.Tech - Artificial Intelligence and Machine Learning</h3>
+                <div class="year">2024 - 2028</div>
+                <p>St. Joseph's College of Engineering - Currently pursuing bachelor's degree with focus on artificial intelligence, machine learning, and modern computing technologies.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications" class="fade-in">
+        <h2>Certifications</h2>
+        <div class="education-timeline">
+            <div class="education-item">
+                <h3>Networking Basics</h3>
+                <div class="year">Cisco</div>
+                <p>Completed comprehensive training in fundamental networking concepts, protocols, and network infrastructure.</p>
+            </div>
+            <div class="education-item">
+                <h3>Generative AI Foundations</h3>
+                <div class="year">AWS</div>
+                <p>Gained foundational knowledge in generative AI technologies, machine learning models, and AWS AI services.</p>
+            </div>
+            <div class="education-item">
+                <h3>Python Essentials 1</h3>
+                <div class="year">Cisco</div>
+                <p>Mastered Python programming fundamentals including syntax, data structures, and object-oriented programming concepts.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="fade-in">
+        <h2>Contact Me</h2>
+        <div class="contact-content">
+            <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">
+                Feel free to reach out to me through email or connect with me on LinkedIn!
+            </p>
+            <div class="contact-methods">
+                <a href="mailto:sasikumar96010@gmail.com" class="contact-btn email-btn">
+                    <span class="icon">📧</span>
+                    <span>Email Me</span>
+                    <span class="contact-detail">sasikumar96010@gmail.com</span>
+                </a>
+                <a href="https://www.linkedin.com/in/sasi-kumar-42770b332?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="contact-btn linkedin-btn">
+                    <span class="icon">💼</span>
+                    <span>Connect on LinkedIn</span>
+                    <span class="contact-detail">Sasi Kumar</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 SASIKUMAR C. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+            <a href="#">Twitter</a>
+        </div>
+    </footer>
+
+    <script>
+        // Create falling snowflakes
+        function createSakuraPetals() {
+            const sakuraContainer = document.getElementById('sakuraContainer');
+            const petalCount = 40;
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'sakura-petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDelay = Math.random() * 10 + 's';
+                petal.style.animationDuration = (Math.random() * 8 + 12) + 's';
+                
+                // Random sway duration for natural snowfall
+                const swayDuration = (Math.random() * 2 + 2) + 's';
+                petal.style.setProperty('--sway-duration', swayDuration);
+                
+                // Random size variation for snowflakes
+                const size = Math.random() * 8 + 6;
+                petal.style.width = size + 'px';
+                petal.style.height = size + 'px';
+                
+                sakuraContainer.appendChild(petal);
+            }
+        }
+
+        // Initialize snowflakes
+        createSakuraPetals();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add active state to navigation on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.opacity = '0.6';
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.style.opacity = '1';
+                    link.style.color = '#64b4ff';
+                } else {
+                    link.style.color = '#e0e0e0';
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        fadeElements.forEach(element => {
+            fadeInObserver.observe(element);
+        });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.btn, .contact-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add gentle sway animation to snowflakes with varying durations
+        const style = document.createElement('style');
+        style.textContent = `
+            .sakura-petal {
+                animation-name: fall, sway;
+                animation-timing-function: linear, ease-in-out;
+                animation-iteration-count: infinite, infinite;
+                animation-direction: normal, alternate;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
